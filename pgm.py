@@ -1,4 +1,5 @@
 import glob
+import socket
 from re import sub
 import urllib2
 from bs4 import BeautifulSoup
@@ -37,13 +38,18 @@ url_split = url.split("/")
 url_source = url_split[0] + "//"
 url_source += url_split[2]
 
-match = url_split[3]
+print url_split
+split = directory.split("\\")
+print split
+match = split[len(split) - 1].lower()
 print count
 
 file_counter.close()
 
 while True:
         try:
+                timeout = 900
+                socket.setdefaulttimeout(timeout)
                 resp = urllib2.urlopen(url)
                 html_source = resp.read()
 
@@ -59,7 +65,8 @@ while True:
                                 print "(Downloading ---->" + str(count) + ".jpg)" +"-- The file is in URL: " + url
                                 print next_src, image_url
                                 image = urllib.URLopener()
-                                image.retrieve(image_url,str(count)+".jpg")
+                                test = image.retrieve(image_url,str(count)+".jpg")
+                                print test
                                 count = int(count) + 1
                                 url = url_source + next_src
                         except 'Navigable String':
